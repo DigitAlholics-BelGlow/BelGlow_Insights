@@ -182,7 +182,7 @@ class _PerfumeShopViewState extends State<PerfumeShopView> {
             end: Alignment.centerRight,
           ).createShader(bounds),
           child: Text(
-            'S/. 950461131',
+            'S/. 95421',
             style: TextStyle(
               fontSize: 35,
               fontWeight: FontWeight.bold,
