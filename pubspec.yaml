@@ -28,6 +28,11 @@ environment:
 # the latest version available on pub.dev. To see which dependencies have newer
 # versions available, run `flutter pub outdated`.
 dependencies:
+  country_picker: ^2.0.2
+  fl_chart: ^0.69.0 # Para gráficos
+  flutter_map: ^3.0.1
+  carousel_slider: ^4.1.1
+  latlong2: ^0.8.1
   flutter:
     sdk: flutter
 
@@ -52,11 +57,68 @@ dev_dependencies:
 
 # The following section is specific to Flutter packages.
 flutter:
-
+  assets:
+      - assets/images/bel_logo.png  
+      - assets/images/ai_icon.png 
+      - assets/images/belglow_logo.jpeg
+      - assets/images/cyzone.png
+      - assets/images/esika.png
+      - assets/images/fondo.jpeg
+      - assets/images/fondo.png
+      - assets/images/lebel.png
+      - assets/images/perfume.png
+      - assets/images/perfume2.png
+      - assets/images/perfumes.jpg
+      - assets/images/perfumes2.jpeg
+      - assets/images/r.jpg
+      - assets/images/Cyzone/Spring/Cyzone_Ainnara_Extra.jpg
+      - assets/images/Cyzone/Spring/Cyzone_Nitro_Air.jpg
+      - assets/images/Cyzone/Spring/Cyzone_Nitro_Intense.jpg
+      - assets/images/Cyzone/Spring/Cyzone_Nitro.jpg
+      - assets/images/Cyzone/Spring/Cyzone_Taste_Warm.jpg
+      - assets/images/Cyzone/Summer/Cyzone_Ainnara.jpg
+      - assets/images/Cyzone/Summer/Cyzone_Blue&Blue_Her.jpg
+      - assets/images/Cyzone/Summer/Cyzone_Bolsa.jpg
+      - assets/images/Cyzone/Summer/Cyzone_Pera_In_Love.jpg
+      - assets/images/Cyzone/Summer/Pure.jpg
+      - assets/images/Cyzone/Winter/Cyzone_Blue&Blue_Him.jpg
+      - assets/images/Cyzone/Winter/Cyzone_Sandia_Shake.jpg
+      - assets/images/Cyzone/Winter/Cyzone_Sweet_Black_Intense.jpg
+      - assets/images/Cyzone/Winter/Cyzone_Taste_Cool.jpg
+      - assets/images/esika/Spring/Fantasia_Azul_Infinito.jpg
+      - assets/images/esika/Spring/Golden_Vainilla.jpg
+      - assets/images/esika/Spring/Magnat_Azul_Infinito.jpg
+      - assets/images/esika/Spring/Magnat_Inspire.jpg
+      - assets/images/esika/Spring/Magnat_Select.jpg
+      - assets/images/esika/Spring/Magnatic_Absolute.jpg
+      - assets/images/esika/Summer/DOrsay_Inspire_Vainilla.jpg
+      - assets/images/esika/Summer/LOVE!.png
+      - assets/images/esika/Summer/Pulso_Absolute.jpg
+      - assets/images/esika/Summer/Red_Power.jpg
+      - assets/images/esika/Summer/Red_Rose.jpg
+      - assets/images/esika/Summer/Vibranza_Addiction.jpg
+      - assets/images/esika/Summer/Vibranza.jpg
+      - assets/images/esika/Summer/Vibranza.png
+      - assets/images/esika/Winter/Azul_Infinito.jpg
+      - assets/images/esika/Winter/DOrsay_Class.jpg
+      - assets/images/esika/Winter/DOrsay_Inspire_grey.jpg
+      - assets/images/esika/Winter/DOrsay_Inspire.jpg
+      - assets/images/esika/Winter/Expression_Sens.jpg
+      - assets/images/l_bel/Spring/Magnolia_DAmelie.png
+      - assets/images/l_bel/Spring/monlbel_2024.png
+      - assets/images/l_bel/Spring/Satin_Nude.png
+      - assets/images/l_bel/Summer/Liasson.jpg
+      - assets/images/l_bel/Summer/Live_Adventure.jpg
+      - assets/images/l_bel/Summer/Mon_LBel_Rubi.png
+      - assets/images/l_bel/Winter/Devos_Magnetic.jpg
+      - assets/images/l_bel/Winter/Homme_033.jpg
+      - assets/images/l_bel/Winter/id.jpg
+      - assets/images/l_bel/Winter/satin.jpg
   # The following line ensures that the Material Icons font is
   # included with your application, so that you can use the icons in
   # the material Icons class.
   uses-material-design: true
+  
 
   # To add assets to your application, add an assets section, like this:
   # assets:

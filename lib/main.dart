@@ -1,125 +1,226 @@
+import 'package:belglow_insights/ui/catalog.dart';
+import 'package:belglow_insights/ui/home_view.dart';
+import 'package:belglow_insights/ui/product_trend_view.dart';
+import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'utils/colors.dart'; 
+import 'package:belglow_insights/ui/bar.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
-
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
-      theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // TRY THIS: Try running your application with "flutter run". You'll see
-        // the application has a purple toolbar. Then, without quitting the app,
-        // try changing the seedColor in the colorScheme below to Colors.green
-        // and then invoke "hot reload" (save your changes or press the "hot
-        // reload" button in a Flutter-supported IDE, or press "r" if you used
-        // the command line to start the app).
-        //
-        // Notice that the counter didn't reset back to zero; the application
-        // state is not lost during the reload. To reset the state, use hot
-        // restart instead.
-        //
-        // This works for code too, not just values: Most code changes can be
-        // tested with just a hot reload.
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: true,
-      ),
-      home: const MyHomePage(title: 'Flutter Demo Home Page'),
+      home: HomeScreen(),
     );
   }
 }
 
-class MyHomePage extends StatefulWidget {
-  const MyHomePage({super.key, required this.title});
-
-  // This widget is the home page of your application. It is stateful, meaning
-  // that it has a State object (defined below) that contains fields that affect
-  // how it looks.
-
-  // This class is the configuration for the state. It holds the values (in this
-  // case the title) provided by the parent (in this case the App widget) and
-  // used by the build method of the State. Fields in a Widget subclass are
-  // always marked "final".
-
-  final String title;
-
+class HomeScreen extends StatefulWidget {
   @override
-  State<MyHomePage> createState() => _MyHomePageState();
+  _HomeScreenState createState() => _HomeScreenState();
 }
 
-class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
+class _HomeScreenState extends State<HomeScreen> {
+  // Controlador para el estado del Drawer
+  bool isDrawerOpen = true;
+  
+  // Variable para almacenar la opción seleccionada del menú
+  String selectedMenu = 'Home';
 
-  void _incrementCounter() {
+  // Método para manejar el cambio de sección
+  void _onMenuSelected(String menu) {
     setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
+      selectedMenu = menu;
     });
+  }
+
+  // Método para manejar el clic en las opciones del menú desplegable
+  void _onMenuOptionSelected(String option) {
+    if (option == 'Perfil') {
+      // Navegar a la pantalla de perfil
+      print('Ver perfil');
+    } else if (option == 'Cerrar sesión') {
+      // Lógica para cerrar sesión
+      print('Cerrar sesión');
+    }
+  }
+
+  // Método que cambia la vista según la selección del menú
+  Widget _getSelectedView() {
+    if (selectedMenu == 'Home') {
+      return HomeView(); // Retorna la vista Home
+    } else if (selectedMenu == 'Product Trend') {
+      return ProductTrendView(); // Retorna la vista Product Trend
+    } else {
+      return Center(
+        child: Text('Selecciona una opción del menú'),
+      );
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
-      appBar: AppBar(
-        // TRY THIS: Try changing the color here to a specific color (to
-        // Colors.amber, perhaps?) and trigger a hot reload to see the AppBar
-        // change color while the other colors stay the same.
-        backgroundColor: Theme.of(context).colorScheme.inversePrimary,
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
-        title: Text(widget.title),
-      ),
-      body: Center(
-        // Center is a layout widget. It takes a single child and positions it
-        // in the middle of the parent.
-        child: Column(
-          // Column is also a layout widget. It takes a list of children and
-          // arranges them vertically. By default, it sizes itself to fit its
-          // children horizontally, and tries to be as tall as its parent.
-          //
-          // Column has various properties to control how it sizes itself and
-          // how it positions its children. Here we use mainAxisAlignment to
-          // center the children vertically; the main axis here is the vertical
-          // axis because Columns are vertical (the cross axis would be
-          // horizontal).
-          //
-          // TRY THIS: Invoke "debug painting" (choose the "Toggle Debug Paint"
-          // action in the IDE, or press "p" in the console), to see the
-          // wireframe for each widget.
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Stack(
+        clipBehavior: Clip.none, // Permite que el botón se sobresalga sin ser tapado
+        children: [
+          Row(
+            children: [
+              // Menú lateral que cubre todo el lado izquierdo
+              AnimatedContainer(
+                width: isDrawerOpen ? 250 : 60, // Cambia el ancho según el estado
+                duration: Duration(milliseconds: 300), // Animación suave
+                child: Container(
+                  color: belPurple, // Asegura que tenga un color de fondo para visualizarlo bien
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start, // Alinea el texto a la izquierda
+                    children: [
+                      Padding(
+                        padding: EdgeInsets.only(left: 12.0, right: 16, top: 16, bottom: 8),
+                        child: Row(
+                          children: [
+                            Image.asset(
+                              '../assets/images/bel_logo.png', // Ruta a la imagen
+                              width: 30, // Ajusta el tamaño de la imagen
+                              height: 30,
+                            ),
+                            if (isDrawerOpen) // Solo mostrar texto si el drawer está abierto
+                              SizedBox(width: 9), // Espacio entre la imagen y el texto
+                            if (isDrawerOpen)
+                              Text(
+                                'BelGlow Insights',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                          ],
+                        ),
+                      ),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 14.0), // Espacio a los lados del Divider
+                        child: Divider(color: Colors.white54),
+                      ),
+                      ListTile(
+                        title: isDrawerOpen
+                            ? Text('Home', style: TextStyle(color: Colors.white))
+                            : null, // Ocultar el texto si el menú está minimizado
+                        leading: Icon(Icons.home, color: Colors.white),
+                        onTap: () => _onMenuSelected('Home'),
+                      ),
+                      ListTile(
+                        title: isDrawerOpen
+                            ? Text('Product Trend', style: TextStyle(color: Colors.white))
+                            : null, // Ocultar el texto si el menú está minimizado
+                        leading: Icon(Icons.trending_up, color: Colors.white),
+                        onTap: () => _onMenuSelected('Product Trend'),
+                      ),
+                      Spacer(), // Esto empuja el contenido hacia abajo
+                    ],
+                  ),
+                ),
+              ),
+              // Columna para la Top Bar y el contenido principal
+              Expanded(
+                child: Column(
+                  children: [
+                    // Top bar que debe estar alineado a la derecha del menu
+                    Container(
+                      color: Colors.white,
+                      padding: EdgeInsets.symmetric(horizontal: 30),
+                      height: 60,
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          // Título de la sección actual
+                          Text(
+                            selectedMenu,
+                            style: TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            ),
+                          ),
+                          // Icono de notificaciones, imagen de perfil y nombre de usuario con flecha desplegable
+                          Row(
+                            children: [
+                              Icon(Icons.notifications, color: Colors.grey[700]),
+                              SizedBox(width: 16), // Espacio entre el icono y la imagen
+                              CircleAvatar(
+                                backgroundImage: NetworkImage(
+                                  'https://m.media-amazon.com/images/I/61l4IFyv0lL._AC_UF894,1000_QL80_.jpg', // Coloca aquí la imagen de perfil
+                                ),
+                              ),
+                              SizedBox(width: 8), // Espacio entre la imagen y el nombre
+                              Text(
+                                'Chris Shawn Doe',
+                                style: TextStyle(color: Colors.grey[700]),
+                              ),
+                              SizedBox(width: 1),
+                              PopupMenuButton<String>(
+                                onSelected: _onMenuOptionSelected,
+                                icon: Icon(Icons.arrow_drop_down, color: Colors.grey[700]),
+                                itemBuilder: (BuildContext context) {
+                                  return ['Perfil', 'Cerrar sesión'].map((String option) {
+                                    return PopupMenuItem<String>(
+                                      value: option,
+                                      child: Text(option),
+                                    );
+                                  }).toList();
+                                },
+                              ),
+                            ],
+                          ),
+                        ],
+                      ),
+                    ),
+                    // Contenedor central que cambiará de contenido según la selección del menú
+                    Expanded(
+                      child: Container(
+                        color: Colors.grey[200], // Fondo más oscuro del área general
+                        padding: EdgeInsets.all(16),
+                        child: _getSelectedView(), // Cargar la vista seleccionada
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ],
+          ),
+          // Botón de minimizar, flotante en la esquina superior derecha, superpuesto y visible
+          AnimatedPositioned(
+            duration: Duration(milliseconds: 300), // Animación suave
+            top: 8,
+            left: isDrawerOpen ? 230 : 40, // Ajustar para que quede alineado al borde
+            child: Container(
+              decoration: BoxDecoration(
+                color: Colors.white, // Misma sombra que el menú
+                shape: BoxShape.circle,
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.black12,
+                    blurRadius: 4,
+                    spreadRadius: 1,
+                  ),
+                ],
+              ),
+              child: IconButton(
+                icon: Icon(isDrawerOpen ? Icons.arrow_back : Icons.menu, color: belPurple),
+                onPressed: () {
+                  setState(() {
+                    isDrawerOpen = !isDrawerOpen;
+                  });
+                },
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.headlineMedium,
-            ),
-          ],
-        ),
+          ),
+        ],
       ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
-      ), // This trailing comma makes auto-formatting nicer for build methods.
     );
   }
 }
